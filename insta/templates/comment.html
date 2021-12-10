@@ -1,14 +1,13 @@
 {%extends "base.html"%}
 {% load static %}
-{% load bootstrap4 %}
+{% load bootstrap3 %}
 {% block content %}
 
-<h3 class="text-center text-uppercase" style="color:navy">Comment Section</h3>
+<h3 class="text-center text-uppercase" style="color:rgb(13, 13, 240)"><strong>Comment Section</strong></h3>
 
 <div class="container">
     <hr>
     <div class="row">
-        {%for img in images%}
         <!-- Empty div -->
         <div class="col-md-5">
             <div class="card" style="width: 100%; height: 100%;">
@@ -49,7 +48,6 @@
             <p><strong class="text-secondary">{{comment.user.user}}</strong> {{comment.comment}}</p>
             {%endfor%}
         </div>
-        {%endfor%}
     </div>
 </div>
 {% endblock %}

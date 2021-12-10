@@ -1,3 +1,4 @@
+from django.forms.fields import ImageField
 from django.shortcuts import render, redirect
 from django.http  import HttpResponse, HttpResponseRedirect
 
@@ -10,7 +11,7 @@ def welcome(request):
 from django.forms.widgets import DateTimeInput
 from django.http.response import HttpResponse
 from insta.models import Comment, Image, Profile
-from .forms import NewPostForm
+from .forms import CommentForm, NewPostForm, UpdateProfileForm, UpdateUserForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
@@ -30,7 +31,7 @@ def homepage(request):
 
     return render(request, 'index.html',{"posts":posts,"profile":profile,"comment":comment})
 
-# @login_required(login_url='/accounts/login/')    
+# @login_required(login_url='/registration/login/')    
 def show_profile(request):
     current_user= request.user
     images= Image.objects.filter(profile=current_user.id).all
@@ -58,10 +59,9 @@ def search(request):
     if 'profile' in request.GET and request.GET['profile']:
         user = request.GET.get("profile")
 
-        print(user)
         results = Profile.search_profile(user)
         message = f'profile'
-        return render(request, 'all-templates/search.html',{'profiles': results,'message': message})
+        return render(request, 'search.html',{'profiles': results,'message': message})
     else:
         message = "You haven't entered anything to search. Please enter a user profile to search."
     return render(request, 'search.html', {'message': message})
@@ -81,19 +81,36 @@ def new_post(request):
 # @login_required(login_url='/accounts/login/')
 def comment(request,id):
     post_comment = Comment.objects.filter(post= id)
-    images = Image.objects.filter(id=id).all()
+    image = Image.objects.filter(id=id).first()
     current_user = request.user
-    profile = request.GET.get("profile")
-    image = get_object_or_404(Image, id=id)
     if request.method == 'POST':
         form = CommentForm(request.POST)
         if form.is_valid():
             comment = form.save(commit = False)
             comment.post = image
-            comment.user = profile
+            comment.user = current_user
             comment.save()
             return HttpResponseRedirect(request.path_info)
     else:
         form = CommentForm()
 
-    return render(request,'comment.html',{"form":form,"images":images,"comments":post_comment})
+    return render(request,'comment.html',{"form":form,"img":image,"comments":post_comment})
+
+#@login_required(login_url='/accounts/login/')
+def like_image(request):
+    user = request.user
+    if request.method == 'POST':
+        image_id = request.POST.get('image_id')
+        image_pic =Image.objects.get(id=image_id)
+        if user in image_pic.like_count.all():
+            image_pic.like_count.add(user)
+        else:
+            image_pic.like_count.add(user)
+        like,created =Like.objects.get_or_create(user=user, image_id=image_id)
+        if not created:
+            if like.value =='Like':
+               like.value = 'Unlike'
+        else:
+               like.value = 'Like'
+        like.save()
+    return redirect('/')
