@@ -1,5 +1,5 @@
 from django.forms.fields import ImageField
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.http  import HttpResponse, HttpResponseRedirect
 
 # Create your views here.
@@ -10,7 +10,7 @@ def welcome(request):
   
 from django.forms.widgets import DateTimeInput
 from django.http.response import HttpResponse
-from insta.models import Comment, Image, Profile
+from insta.models import Comment, Image, Like, Profile
 from .forms import CommentForm, NewPostForm, UpdateProfileForm, UpdateUserForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -97,20 +97,14 @@ def comment(request,id):
     return render(request,'comment.html',{"form":form,"img":image,"comments":post_comment})
 
 #@login_required(login_url='/accounts/login/')
-def like_image(request):
-    user = request.user
-    if request.method == 'POST':
-        image_id = request.POST.get('image_id')
-        image_pic =Image.objects.get(id=image_id)
-        if user in image_pic.like_count.all():
-            image_pic.like_count.add(user)
-        else:
-            image_pic.like_count.add(user)
-        like,created =Like.objects.get_or_create(user=user, image_id=image_id)
-        if not created:
-            if like.value =='Like':
-               like.value = 'Unlike'
-        else:
-               like.value = 'Like'
+def like_image(request, image_id):
+    image = get_object_or_404(Image,id = image_id)
+    like = Like.objects.filter(image = image ,user = request.user).first()
+    if like is None:
+        like = Like()
+        like.image = image
+        like.user = request.user
         like.save()
-    return redirect('/')
+    else:
+        like.delete()
+    return redirect('index')

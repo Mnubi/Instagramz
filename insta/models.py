@@ -66,3 +66,15 @@ class Comment(models.Model):
 
     def delete_comment(self):
         self.delete()
+
+
+class Like(models.Model):
+    image = models.ForeignKey(Image,related_name='upvotes',on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def str(self):
+        return self.image
+    class Meta:
+            constraints = [
+                models.UniqueConstraint(fields=['user', 'image'], name="unique_like"),
+            ]
