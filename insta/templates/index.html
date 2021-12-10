@@ -2,7 +2,11 @@
 {% load static %}
 {% load bootstrap3 %}
 
+{% block styles %}
+{% bootstrap_css %}
+<link rel="stylesheet" href="{% static 'css/baseinsta.css' %}">
 
+{% endblock %}
 {% block content %}
 
 <!-- upload new photo-->
@@ -53,10 +57,15 @@
                             </div>
     
                         </div>
+
+                        <div>
+                            <h4>Likes: {{img.upvotes.all|length}}</h4>
+                        </div>
+                        
                         <div class="card-block">
                             <br>
-                            <img src="https://img.icons8.com/material-outlined/24/000000/filled-like.png"/>
-                            <img src="https://img.icons8.com/material-outlined/24/000000/speech-bubble--v2.png" />
+                            <a href="{%url 'like_image' img.id %}"><img src="https://img.icons8.com/material-outlined/24/000000/filled-like.png"/></a>
+                            <a href="{%url 'comment' img.id %}"><img src="https://img.icons8.com/material-outlined/24/000000/speech-bubble--v2.png"/></a>
                             <img src="https://img.icons8.com/windows/32/000000/filled-sent.png" />
     
                             <h5 class="card-title"><span class="" style="font-weight: 700;">{{img.profile}}</span>
@@ -111,7 +120,7 @@
             <div>
                 <div class="row">
                     <div class="col-md-6">
-                        <b style="font-size:15pt; color:grey">Write New Post </b>
+                        <b style="font-size:15pt; color:rgb(108, 108, 134)">Write New Post </b>
                     </div>
                     <div class="col-md-6">
                         <a class="btn btn-info newpost" href="{% url 'post' %}"><img
