@@ -38,9 +38,9 @@
                                                 style="width:100%;max-width:100%">
                                         </div>
                                         <div class="modal-body">
-                                            <p class="text-justify">{{img.caption}}</p>
-                                            <p class="text-left"><b>Likes:</b> {{img.likes}}</p>
-                                            <p class="text-left"><b>Posted on:</b></p>
+                                            <p class="text-justify"><b>Caption:</b> {{img.caption}}</p>
+                                            <p class="text-left"><b>Likes:</b> {{img.upvotes.all|length}}</p>
+                                           
     
                                         </div>
                                         <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10 padding-1">
@@ -59,7 +59,15 @@
                         </div>
 
                         <div>
-                            <h4>Likes: {{img.upvotes.all|length}}</h4>
+                            <div>
+                                <h4 class="card-title"><span class="" style="font-weight: 700;">Caption: </span>
+                                    {{img.caption}}
+                                </h4>
+                            </div>
+                            <div style="float: right;">
+                                <h4>Likes: {{img.upvotes.all|length}}</h4> <span> </span>
+                            </div>
+                            
                         </div>
                         
                         <div class="card-block">
@@ -67,15 +75,13 @@
                             <a href="{%url 'like_image' img.id %}"><img src="https://img.icons8.com/material-outlined/24/000000/filled-like.png"/></a>
                             <a href="{%url 'comment' img.id %}"><img src="https://img.icons8.com/material-outlined/24/000000/speech-bubble--v2.png"/></a>
                             <img src="https://img.icons8.com/windows/32/000000/filled-sent.png" />
-    
-                            <h5 class="card-title"><span class="" style="font-weight: 700;">{{img.profile}}</span>
-                                {{img.caption}}
-                            </h5>
+                        </div>
+                        <div>
                             <a href="{%url 'comment' img.id %}" class="pl-3">
                                 Comments
+                                <hr>
                             </a>
-                            <br>
-                            <br>
+                            
     
                         </div>
                     </div>
@@ -120,7 +126,7 @@
             <div>
                 <div class="row">
                     <div class="col-md-6">
-                        <b style="font-size:15pt; color:rgb(108, 108, 134)">Write New Post </b>
+                        <b style="font-size:15pt; color:rgb(31, 88, 53)">Write New Post </b>
                     </div>
                     <div class="col-md-6">
                         <a class="btn btn-info newpost" href="{% url 'post' %}"><img

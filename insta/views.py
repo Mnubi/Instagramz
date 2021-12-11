@@ -20,7 +20,7 @@ def welcome(request):
 
 # Create your views here.
 
-# @login_required(login_url='/accounts/login/')
+@login_required(login_url='/accounts/login/')
 def homepage(request):
     """
     View function to display homepage content
@@ -31,7 +31,7 @@ def homepage(request):
 
     return render(request, 'index.html',{"posts":posts,"profile":profile,"comment":comment})
 
-# @login_required(login_url='/registration/login/')    
+@login_required(login_url='/registration/login/')    
 def show_profile(request):
     current_user= request.user
     images= Image.objects.filter(profile=current_user.id).all
@@ -39,7 +39,7 @@ def show_profile(request):
 
     return render(request, 'registration/profile.html',{"images":images, "profile":profile} )
 
-# @login_required(login_url='/accounts/login/')    
+@login_required(login_url='/accounts/login/')    
 def update_profile(request):
     current_user= request.user
     profile = Profile.objects.filter(user_id=current_user.id).first()
@@ -55,7 +55,7 @@ def update_profile(request):
     return render(request, "registration/update_profile.html", {"form":form, "profile":profile})
 
 
-# @login_required(login_url='/accounts/login/')
+@login_required(login_url='/accounts/login/')
 def search(request): 
     if 'profile' in request.GET and request.GET['profile']:
         user = request.GET.get("profile")
@@ -67,7 +67,7 @@ def search(request):
         message = "You haven't entered anything to search. Please enter a user profile to search."
     return render(request, 'search.html', {'message': message})
 
-# @login_required(login_url='/accounts/login/')
+@login_required(login_url='/accounts/login/')
 def new_post(request):
     if request.method == 'POST':
         form = NewPostForm(request.POST, request.FILES)        
@@ -79,7 +79,7 @@ def new_post(request):
         form = NewPostForm()
     return render(request, 'new_post.html', {"form": form})
 
-# @login_required(login_url='/accounts/login/')
+@login_required(login_url='/accounts/login/')
 def comment(request,id):
     post_comment = Comment.objects.filter(post= id)
     image = Image.objects.filter(id=id).first()
@@ -97,7 +97,7 @@ def comment(request,id):
 
     return render(request,'comment.html',{"form":form,"img":image,"comments":post_comment})
 
-#@login_required(login_url='/accounts/login/')
+@login_required(login_url='/accounts/login/')
 def like_image(request, image_id):
     image = get_object_or_404(Image,id = image_id)
     like = Like.objects.filter(image = image ,user = request.user).first()

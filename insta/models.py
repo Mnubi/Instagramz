@@ -5,7 +5,7 @@ from django.dispatch import receiver
 
 # Create your models here.
 class Profile(models.Model):
-    user = models.OneToOneField(User,on_delete=models.CASCADE)
+    user = models.OneToOneField(User,on_delete=models.CASCADE, null=True)
     profile_pic = CloudinaryField('image', blank=True)
     bio = models.TextField(max_length=300, default="Bio", blank=True)
 
