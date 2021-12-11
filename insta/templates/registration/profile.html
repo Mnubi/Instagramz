@@ -1,4 +1,4 @@
-{% extends 'registration/base.html' %}
+
 {% load bootstrap3 %}
 {%block content%}
 <style>
@@ -28,7 +28,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <h2>{{user.username}}
-                        <a href="{% url 'update_profile' user.id %}" target="_blank"><button class="btn">Edit Profile</button></a>
+                        <a href="{% url 'update_profile' %}" target="_blank"><button class="btn">Edit Profile</button></a>
                         <a href="/"><button class="btn">Home</button></a>
                     </h2>
                 </div>
@@ -41,6 +41,10 @@
                     <p>Followers</p>
                 </div>
             </div>
+            <div class="row3 mt-3">
+                <p class=" font-weight-bold">{{user.username}}</p>
+                <p class="">{{user.profile.bio}}</p>
+              </div>
             <div class="row">
                 <div class="col-md-12">
                     <p id="bio">{{user.profile.bio}}</p>
@@ -53,7 +57,7 @@
     <div class="col-md-4">
         <div class="card" style="width: 100%;">
             <div class="imag" style="width:100%; height:200px">
-                <a href="#{{img.id}}" data-toggle="modal" data-target="#{{img.id}}">
+                <a href="" data-toggle="modal" data-target="mymodal{{img.id}}">
                     <img class="card-img-top" src="{{img.image.url}}" class="img-responsive" alt="{{image.img_name}}">
                 </a>
             </div>
@@ -69,7 +73,7 @@
                             </div>
                             <div class="modal-body">
                                 <p class="text-justify">{{img.caption}}</p>
-                                <p class="text-left"><b>Likes:</b> {{img.likes}}</p>
+                                <p class="text-left"><b>Likes: {{img.upvotes.all|length}}</p>
                                 <p class="text-left"><b>Posted on:</b></p>
 
                             </div>
