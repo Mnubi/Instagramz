@@ -1,6 +1,13 @@
 from django.forms.fields import ImageField
 from django.shortcuts import get_object_or_404, render, redirect
 from django.http  import HttpResponse, HttpResponseRedirect
+from django.http.response import HttpResponse
+from insta.models import Comment, Image, Like, Profile
+from .forms import CommentForm, NewPostForm, UpdateProfileForm
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.conf import settings
+from django.contrib.auth.models import User
 
 # Create your views here.
 def welcome(request):
@@ -8,14 +15,7 @@ def welcome(request):
 
 
   
-from django.forms.widgets import DateTimeInput
-from django.http.response import HttpResponse
-from insta.models import Comment, Image, Like, Profile
-from .forms import CommentForm, NewPostForm, UpdateProfileForm, UpdateUserForm
-from django.contrib import messages
-from django.contrib.auth.decorators import login_required
-from django.conf import settings
-from django.contrib.auth.models import User
+
 # from django.shortcuts import get_object_or_404, redirect, render
 
 # Create your views here.
@@ -40,18 +40,19 @@ def show_profile(request):
     return render(request, 'registration/profile.html',{"images":images, "profile":profile} )
 
 # @login_required(login_url='/accounts/login/')    
-# def update_profile(request,id):
+def update_profile(request):
+    current_user= request.user
+    profile = Profile.objects.filter(user_id=current_user.id).first()
+    form=UpdateProfileForm()
+    if request.method=='POST':
+        form=UpdateProfileForm(request.POST,request.FILES)
+        
+        if form.is_valid():
+            form.instance.user=request.user
+            form.save()
+            redirect("/profile")
     
-#     obj = get_object_or_404(Profile,user_id=id)
-#     obj2 = get_object_or_404(User,id=id)
-#     form = UpdateProfileForm(request.POST or None, instance = obj)
-#     form2 = UpdateUserForm(request.POST or None, instance = obj2)
-#     if form.is_valid() and form2.is_valid():
-#         form.save()
-#         form2.save()
-#         return HttpResponseRedirect("/profile")
-    
-#     return render(request, "registration/update_profile.html", {"form":form, "form2":form2})
+    return render(request, "registration/update_profile.html", {"form":form, "profile":profile})
 
 
 # @login_required(login_url='/accounts/login/')
