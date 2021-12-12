@@ -28,7 +28,7 @@ class Profile(models.Model):
 class Image(models.Model):
     img_name = models.CharField(max_length=80)
     caption = models.CharField(max_length=500)
-    profile = models.ForeignKey(Profile,on_delete = models.CASCADE, null=True)
+    profile = models.ForeignKey(User,on_delete = models.CASCADE, null=True)
     likes = models.ManyToManyField(User, related_name='likes', blank=True)
     comments = models.CharField(max_length=100,blank=True)
     image = CloudinaryField('images')

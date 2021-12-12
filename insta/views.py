@@ -14,8 +14,6 @@ def welcome(request):
     return HttpResponse('Welcome to the Instagram Replica')
 
 
-  
-
 # from django.shortcuts import get_object_or_404, redirect, render
 
 # Create your views here.
@@ -73,6 +71,9 @@ def new_post(request):
         form = NewPostForm(request.POST, request.FILES)        
         if form.is_valid():
             image=form.save(commit=False)
+            image.profile=request.user
+            if 'img' in request.FILES:
+                image.image=request.FILES['img']
             image.save()
         return redirect('/')
     else:
