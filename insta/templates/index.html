@@ -76,6 +76,7 @@
                             <a href="{%url 'comment' img.id %}"><img src="https://img.icons8.com/material-outlined/24/000000/speech-bubble--v2.png"/></a>
                             <img src="https://img.icons8.com/windows/32/000000/filled-sent.png" />
                         </div>
+                        
                         <div>
                             <a href="{%url 'comment' img.id %}" class="pl-3">
                                 Comments
@@ -93,7 +94,7 @@
         </div>
         <div class="col-md-5">
             <div class="showprofile">
-                <h1 style="font-weight: 700;">Profile</h1>
+                <h1 style="font-weight: 700;"> {{user.username}} Profile</h1>
                 <hr>
                 <div class="row">
                     <div class="col-md-4">
