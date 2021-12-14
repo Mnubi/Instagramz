@@ -82,7 +82,7 @@ The following languages have been used on this project:
 
 ## Known Bugs
 
-The image uploading function is not working but it runs locally
+There are no known bugs
 
 ## Support and contact details 🙂
 
